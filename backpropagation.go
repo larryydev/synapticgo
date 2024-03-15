@@ -1,1 +1,1 @@
-package goneuro
+package gonn

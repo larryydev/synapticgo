@@ -1,3 +1,3 @@
-module github.com/larryydev/goneuro
+module github.com/larryydev/gonn
 
 go 1.22.0

@@ -1,1 +1,1 @@
-package goneuro_test
+package gonn_test

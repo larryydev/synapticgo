@@ -1,4 +1,4 @@
-package goneuro
+package gonn
 
 type Node struct {
 	value      float64

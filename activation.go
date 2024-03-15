@@ -1,4 +1,4 @@
-package goneuro
+package gonn
 
 import (
 	"math"
