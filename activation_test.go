@@ -1,10 +1,10 @@
-package gonn_test
+package synapticgo_test
 
 import (
 	"math"
 	"testing"
 
-	"github.com/larryydev/gonn"
+	"github.com/larryydev/synapticgo"
 )
 
 const tolerance = 1e-14
@@ -21,7 +21,7 @@ func TestSigmoid(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := gonn.Sigmoid(c.x)
+		got := synapticgo.Sigmoid(c.x)
 		if math.Abs(got-c.want) > tolerance {
 			t.Errorf("Sigmoid(%f) = %f, want %f", c.x, got, c.want)
 		}
@@ -40,7 +40,7 @@ func TestStepFunction(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := gonn.StepFunction(c.x)
+		got := synapticgo.StepFunction(c.x)
 		if got != c.want {
 			t.Errorf("step(%f) = %f, want %f", c.x, got, c.want)
 		}
@@ -59,7 +59,7 @@ func TestTanh(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := gonn.Tanh(c.x)
+		got := synapticgo.Tanh(c.x)
 		if math.Abs(got-c.want) > tolerance {
 			t.Errorf("tanh(%f) = %f, want %f", c.x, got, c.want)
 		}
@@ -78,7 +78,7 @@ func TestRelu(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := gonn.Relu(c.x)
+		got := synapticgo.Relu(c.x)
 		if got != c.want {
 			t.Errorf("relu(%f) = %f, want %f", c.x, got, c.want)
 		}
@@ -97,7 +97,7 @@ func TestLeakyRelu(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := gonn.LeakyRelu(c.x)
+		got := synapticgo.LeakyRelu(c.x)
 		if math.Abs(got-c.want) > tolerance {
 			t.Errorf("leakyRelu(%f) = %f, want %f (diff = %f)", c.x, got, c.want, math.Abs(got-c.want))
 		}
@@ -118,7 +118,7 @@ func TestPRelu(t *testing.T) {
 	alpha := 0.25
 
 	for _, c := range cases {
-		got := gonn.PRelu(c.x, alpha)
+		got := synapticgo.PRelu(c.x, alpha)
 		if math.Abs(got-c.want) > tolerance {
 			t.Errorf("prelu(%f) = %f, want %f (diff = %f)", c.x, got, c.want, math.Abs(got-c.want))
 		}

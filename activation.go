@@ -1,4 +1,4 @@
-package gonn
+package synapticgo
 
 import (
 	"math"

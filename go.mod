@@ -1,3 +1,3 @@
-module github.com/larryydev/gonn
+module github.com/larryydev/synapticgo
 
 go 1.22.0
