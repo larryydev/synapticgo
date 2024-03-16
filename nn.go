@@ -1,12 +1,16 @@
 package synapticgo
 
 import (
+	"encoding/gob"
 	"fmt"
 	"math/rand"
+	"os"
 	"reflect"
 	"runtime"
 	"strings"
 )
+
+// Structures
 
 type NodeStruct struct {
 	value      float64
@@ -21,6 +25,8 @@ type LayerStruct struct {
 type NNStruct struct {
 	layers []*LayerStruct
 }
+
+// Objects
 
 func Node(args ...interface{}) *NodeStruct {
 	var value, weight float64
@@ -55,6 +61,8 @@ func NN(layers ...*LayerStruct) *NNStruct {
 	return &NNStruct{layers: layers}
 }
 
+// Public functions
+
 func (nn *NNStruct) Forward(inputs []float64) []float64 {
 	numberOfLayers := len(nn.layers)
 	outputs := make([]float64, len(nn.layers[numberOfLayers-1].nodes))
@@ -80,12 +88,61 @@ func (nn *NNStruct) Forward(inputs []float64) []float64 {
 	return outputs
 }
 
-func (nn *NNStruct) Train(inputs []float64, outputs []float64) {
+func (nn *NNStruct) Backward(output []float64, target []float64, learningRate float64) {
+	errors := make([]float64, len(output))
+	for i := range output {
+		errors[i] = target[i] - output[i]
+	}
 
+	for layerIndex := len(nn.layers) - 1; layerIndex >= 0; layerIndex-- {
+		layer := nn.layers[layerIndex]
+		var nextErrors []float64
+
+		if layerIndex == len(nn.layers)-1 {
+			for i, node := range layer.nodes {
+				node.weight += learningRate * errors[i] * node.value * (1 - node.value)
+			}
+		} else {
+			nextLayer := nn.layers[layerIndex+1]
+			nextErrors = make([]float64, len(layer.nodes))
+
+			for i, node := range layer.nodes {
+				sum := 0.0
+				for j, nextNode := range nextLayer.nodes {
+					sum += nextNode.weight * errors[j] * nextNode.value * (1 - nextNode.value)
+				}
+				nextErrors[i] = sum
+				node.weight += learningRate * sum * node.value * (1 - node.value)
+			}
+		}
+
+		errors = nextErrors
+	}
 }
 
-func (nn *NNStruct) Save() {
+func (nn *NNStruct) Train(inputs [][]float64, targets [][]float64, epochs int, learningRate float64) {
+	for epoch := 0; epoch < epochs; epoch++ {
+		for i, input := range inputs {
+			output := nn.Forward(input)
+			nn.Backward(output, targets[i], learningRate)
+		}
+	}
+}
 
+func (nn *NNStruct) Save(filename string) error {
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	encoder := gob.NewEncoder(file)
+	err = encoder.Encode(nn)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (nn *NNStruct) VisualizeNN() {
@@ -97,6 +154,8 @@ func (nn *NNStruct) VisualizeNN() {
 		}
 	}
 }
+
+// Helper functions
 
 func getFunctionName(i interface{}) string {
 	fullString := runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()

@@ -10,21 +10,24 @@ import (
 func TestForward(t *testing.T) {
 	layer1 := nn.Layer(
 		nn.Node(0.0, 0.1, nn.Sigmoid),
-		nn.Node(0.0, 0.2, nn.Sigmoid),
+		nn.Node(0.0, 0.1, nn.Sigmoid),
+		nn.Node(0.0, 0.1, nn.Sigmoid),
+		nn.Node(0.0, 0.1, nn.Sigmoid),
 	)
 	layer2 := nn.Layer(
-		nn.Node(0.0, 0.3, nn.Sigmoid),
-		nn.Node(0.0, 0.4, nn.Sigmoid),
-		nn.Node(0.0, 0.5, nn.Sigmoid),
+		nn.Node(0.0, 0.1, nn.Sigmoid),
+		nn.Node(0.0, 0.1, nn.Sigmoid),
+		nn.Node(0.0, 0.1, nn.Sigmoid),
 	)
 	layer3 := nn.Layer(
-		nn.Node(0.0, 0.6, nn.Sigmoid),
+		nn.Node(0.0, 0.0, nn.Sigmoid),
+		nn.Node(0.0, 0.0, nn.Sigmoid),
 	)
 	neuralNetwork := nn.NN(layer1, layer2, layer3)
 
 	neuralNetwork.VisualizeNN()
 
-	inputs := []float64{0.1, 0.2}
+	inputs := []float64{0.1, 0.1, 0.2, 0.2}
 	expected := []float64{}
 	outputs := neuralNetwork.Forward(inputs)
 	assertFloatSlicesEqual(t, expected, outputs)
