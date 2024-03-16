@@ -1,5 +1,13 @@
 package synapticgo
 
+import (
+	"fmt"
+	"math/rand"
+	"reflect"
+	"runtime"
+	"strings"
+)
+
 type NodeStruct struct {
 	value      float64
 	weight     float64
@@ -14,7 +22,28 @@ type NNStruct struct {
 	layers []*LayerStruct
 }
 
-func Node(value float64, weight float64, activation func(float64) float64) *NodeStruct {
+func Node(args ...interface{}) *NodeStruct {
+	var value, weight float64
+	var activation func(float64) float64
+
+	switch len(args) {
+	case 0:
+		// if no arguments are provided
+		value = rand.Float64()
+		weight = rand.Float64()
+		activation = Sigmoid
+	case 2:
+		value = args[0].(float64)
+		weight = args[1].(float64)
+		activation = Sigmoid
+	case 3:
+		value = args[0].(float64)
+		weight = args[1].(float64)
+		activation = args[2].(func(float64) float64)
+	default:
+		panic("Invalid number of arguments for Node function")
+	}
+
 	return &NodeStruct{value: value, weight: weight, activation: activation}
 }
 
@@ -49,4 +78,28 @@ func (nn *NNStruct) Forward(inputs []float64) []float64 {
 	}
 
 	return outputs
+}
+
+func (nn *NNStruct) Train(inputs []float64, outputs []float64) {
+
+}
+
+func (nn *NNStruct) Save() {
+
+}
+
+func (nn *NNStruct) VisualizeNN() {
+	fmt.Println("Neural Network Structure:")
+	for i, layer := range nn.layers {
+		fmt.Printf("Layer %d:\n", i+1)
+		for _, node := range layer.nodes {
+			fmt.Printf("  Node: Value=%.2f, Weight=%.2f, Activation=%v\n", node.value, node.weight, getFunctionName(node.activation))
+		}
+	}
+}
+
+func getFunctionName(i interface{}) string {
+	fullString := runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
+	lastIndex := strings.LastIndex(fullString, ".")
+	return fullString[lastIndex+1:]
 }
