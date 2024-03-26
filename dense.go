@@ -9,6 +9,22 @@ type Dense struct {
 	activation func(float64) float64
 }
 
+func (d *Dense) GetLayers() []*Layer {
+	return d.layers
+}
+
+func (d *Dense) SetLayers(layers []*Layer) {
+	d.layers = layers
+}
+
+func (d *Dense) GetActivation() func(float64) float64 {
+	return d.activation
+}
+
+func (d *Dense) SetActivation(activation func(float64) float64) {
+	d.activation = activation
+}
+
 func (d *Dense) Forward(inputs []float64) []float64 {
 	if len(inputs) != len(d.layers[0].inputs) {
 		panic(fmt.Sprintf("Invalid input shape: \n your input size: %d.\n nn's input size: %d", len(inputs), len(d.layers[0].inputs)))
