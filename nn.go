@@ -9,7 +9,3 @@ func NewNeuralNetwork(denses ...*Dense) *NeuralNetwork {
 		denses: denses,
 	}
 }
-
-func (nn *NeuralNetwork) NeuralNetwork(denses ...*Dense) *NeuralNetwork {
-	return NewNeuralNetwork(denses...)
-}

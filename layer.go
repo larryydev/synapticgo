@@ -10,20 +10,28 @@ type Layer struct {
 	bias    float64
 }
 
-func NewLayer(n int, useBias bool) *Layer {
-	inputs := getFloats(n)
-	weights := getFloats(n)
+func (l *Layer) GetInputs() []float64 {
+	return l.inputs
+}
 
-	bias := 0.0
-	if useBias {
-		bias = rand.Float64() * 1
-	}
+func (l *Layer) SetInputs(inputs []float64) {
+	l.inputs = inputs
+}
 
-	return &Layer{
-		inputs:  inputs,
-		weights: weights,
-		bias:    bias,
-	}
+func (l *Layer) GetWeights() []float64 {
+	return l.weights
+}
+
+func (l *Layer) SetWeights(weights []float64) {
+	l.weights = weights
+}
+
+func (l *Layer) GetBias() float64 {
+	return l.bias
+}
+
+func (l *Layer) SetBias(bias float64) {
+	l.bias = bias
 }
 
 func (l *Layer) DotProduct() float64 {
@@ -34,6 +42,26 @@ func (l *Layer) DotProduct() float64 {
 	}
 
 	return dotProduct + l.bias
+}
+
+func NewEmptyLayer() *Layer {
+	return &Layer{}
+}
+
+func NewLayer(n int, usebias bool) *Layer {
+	inputs := getFloats(n)
+	weights := getFloats(n)
+
+	bias := 0.0
+	if usebias {
+		bias = rand.Float64() * 100
+	}
+
+	return &Layer{
+		inputs:  inputs,
+		weights: weights,
+		bias:    bias,
+	}
 }
 
 func getFloats(n int) []float64 {
