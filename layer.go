@@ -5,14 +5,25 @@ import (
 )
 
 type Layer struct {
-	inputs     []float64
-	weights    []float64
-	bias       float64
-	activation func(float64) float64
+	inputs  []float64
+	weights []float64
+	bias    float64
 }
 
-func (l *Layer) Layer(n int, activation func(float64) float64, useBias bool) *Layer {
-	return newLayer(n, activation, useBias)
+func NewLayer(n int, useBias bool) *Layer {
+	inputs := getFloats(n)
+	weights := getFloats(n)
+
+	bias := 0.0
+	if useBias {
+		bias = rand.Float64() * 1
+	}
+
+	return &Layer{
+		inputs:  inputs,
+		weights: weights,
+		bias:    bias,
+	}
 }
 
 func (l *Layer) DotProduct() float64 {
@@ -23,30 +34,6 @@ func (l *Layer) DotProduct() float64 {
 	}
 
 	return dotProduct + l.bias
-}
-
-func newLayer(n int, activation func(float64) float64, useBias bool) *Layer {
-	inputs := getFloats(n)
-	weights := getFloats(n)
-
-	var activation_ func(float64) float64
-	if activation == nil {
-		activation_ = Sigmoid
-	} else {
-		activation_ = activation
-	}
-
-	bias := 0.0
-	if useBias {
-		bias = rand.Float64() * 1
-	}
-
-	return &Layer{
-		inputs:     inputs,
-		weights:    weights,
-		bias:       bias,
-		activation: activation_,
-	}
 }
 
 func getFloats(n int) []float64 {
