@@ -54,7 +54,7 @@ func NewLayer(n int, usebias bool) *Layer {
 
 	bias := 0.0
 	if usebias {
-		bias = rand.Float64() * 100
+		bias = rand.Float64() * 1
 	}
 
 	return &Layer{
@@ -67,7 +67,7 @@ func NewLayer(n int, usebias bool) *Layer {
 func getFloats(n int) []float64 {
 	res := make([]float64, n)
 	for i := range res {
-		res[i] = rand.Float64() * 100
+		res[i] = (rand.Float64()*2 - 1)
 	}
 	return res
 }
