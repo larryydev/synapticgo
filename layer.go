@@ -34,14 +34,14 @@ func (l *Layer) SetBias(bias float64) {
 	l.bias = bias
 }
 
-func (l *Layer) DotProduct() float64 {
-	dotProduct := 0.0
+func (l *Layer) CalculateSum() float64 {
+	CalculateSum := 0.0
 
 	for i, input := range l.inputs {
-		dotProduct += input * l.weights[i]
+		CalculateSum += input * l.weights[i]
 	}
 
-	return dotProduct + l.bias
+	return CalculateSum + l.bias
 }
 
 func NewEmptyLayer() *Layer {

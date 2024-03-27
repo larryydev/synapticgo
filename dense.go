@@ -36,7 +36,7 @@ func (d *Dense) Forward(inputs []float64) []float64 {
 		curLayer := d.layers[i]
 		nextLayer := d.layers[i+1]
 
-		curLayerOutput := curLayer.DotProduct()
+		curLayerOutput := curLayer.CalculateSum()
 		outputValue := d.activation(curLayerOutput)
 
 		for j := 0; j < len(nextLayer.inputs)-1; j++ {

@@ -23,7 +23,7 @@ func TestNewLayer(t *testing.T) {
 	})
 }
 
-func TestDotProduct(t *testing.T) {
+func TestCalculateSum(t *testing.T) {
 	t.Run("calculates dot product correctly", func(t *testing.T) {
 		layer := nn.NewEmptyLayer()
 
@@ -32,7 +32,7 @@ func TestDotProduct(t *testing.T) {
 		layer.SetBias(0.0)
 
 		expected := 1.0*4.0 + 2.0*5.0 + 3.0*6.0
-		actual := layer.DotProduct()
+		actual := layer.CalculateSum()
 
 		if actual != expected {
 			t.Errorf("expected dot product to be %f, but got %f", expected, actual)
